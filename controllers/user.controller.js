@@ -44,62 +44,88 @@ try {
 
 
 
+export const login = async (req, res) => {
+    try {
+        const { email, password, role } = req.body;
 
+        if (!email || !password || !role) {
+            return res.status(400).json({
+                message: "Something is missing",
+                success: false
+            });
+        }
 
-export const login=async(req,res)=>{
-try {
-    const {email,password,role}=req.body;
-if(!email||!password||!role){
-return res.status(400).json({
-    message:"something is missing",
-    success:false
-})
-}
-let user=await User.findOne({email})
-if(!user){
-    return res.status(400).json({
-        message:"Increct email and password",
-        success:false
-    })
-}
-const isPasswordMatch=await bcrypt.compare(password,user.password)
-if(!isPasswordMatch){
-    return res.status(400).json({
-         message:"Increct email and password",
-        success:false
-    })
-}
+        const user = await User.findOne({ email });
 
-if(role!==user.role){
-    return res.status(400).json({
-        message:"account not exist with this ",
-        success:false
-    })
-}
-const tokenData={
-    userId:user._id
-}
-const token=await jwt.sign(tokenData,process.env.SECRET_KEY,{expiresIn:"1d"})
+        if (!user) {
+            return res.status(400).json({
+                message: "Incorrect email and password",
+                success: false
+            });
+        }
 
-user={
-    _id:user._id,
-    fullname:user.fullname,
-    email:user.email,
-    phoneNumber:user.phoneNumber,
-    role:user.role,
-    profile:user.profile
-}
+        const isPasswordMatch = await bcrypt.compare(
+            password,
+            user.password
+        );
 
-return  res.status(200).cookie("token",{maxAge:1*24*60*60*1000,httpsonly:true,sameSite:"strict"}).json({
-message:`welcome back to ${user.fullname}`,
-user,
-success:true
-})
-} catch (error) {
-    console.log(error)
-}
-}
+        if (!isPasswordMatch) {
+            return res.status(400).json({
+                message: "Incorrect email and password",
+                success: false
+            });
+        }
 
+        if (role !== user.role) {
+            return res.status(400).json({
+                message: "Account does not exist with this role",
+                success: false
+            });
+        }
+
+        const tokenData = {
+            userId: user._id
+        };
+
+        const token = jwt.sign(
+            tokenData,
+            process.env.SECRET_KEY,
+            {
+                expiresIn: "1d"
+            }
+        );
+
+        const userData = {
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+            profile: user.profile
+        };
+
+        return res
+            .status(200)
+            .cookie("token", token, {
+                maxAge: 1 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                sameSite: "strict"
+            })
+            .json({
+                message: `Welcome back ${userData.fullname}`,
+                user: userData,
+                success: true
+            });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Server error",
+            success: false
+        });
+    }
+};
 
 
 
@@ -128,7 +154,11 @@ export const updateprofile=async(req,res)=>{
      
 
         // cloudinary  ayga 
-        const skillsArry=skills.split(",");
+        let skillsArry;
+        if(skills){
+ const skillsArry=skills.split(",");
+        }
+       
         const userId=req.id;
         let user=await User.findById(userId)
         if(!user){
@@ -138,11 +168,12 @@ export const updateprofile=async(req,res)=>{
         }
 
  // update data 
-user.fullname=fullname,
-user.email=email,
-user.phoneNumber=phoneNumber,
-user.profile.bio=bio,
-user.profile.skills=skillsArry
+
+ if(fullname) user.fullname=fullname;
+ if(email) user.email=email;
+ if(phoneNumber) user.phoneNumber=phoneNumber;
+ if(bio) user.profile.bio=bio;
+ if(skillsArry) user.profile.skills=skillsArry;
 
 await user.save();
 user={
