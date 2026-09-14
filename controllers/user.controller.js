@@ -89,8 +89,12 @@ user={
     role:user.role,
     profile:user.profile
 }
-
-return  res.status(200).cookie("token",{maxAge:1*24*60*60*1000,httpsonly:true,sameSite:"strict"}).json({
+res.cookie("token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000
+}).json({
 message:`welcome back to ${user.fullname}`,
 user,
 success:true

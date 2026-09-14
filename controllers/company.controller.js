@@ -1,5 +1,6 @@
+import { Company } from "../models/company.model.js";
 export const registerCompany= async(req,res)=>{
-    try{
+try{
 const {companyName}= req.body;
 if(!companyName){
     return res.status(400).json({
@@ -7,14 +8,14 @@ if(!companyName){
         success:false
     })
 }
-let company= await company.findOne({name:companyName});
+let company= await Company.findOne({name:companyName});
 if(company){
     return res.status(400).json({
         message:"Company already exists",
         success:false
-    })
+    }) 
 }
-company= await company.create({
+company= await Company.create({
     name:companyName,
     userId:req.id
     })
