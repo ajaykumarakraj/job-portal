@@ -10,7 +10,7 @@ const jobSchema= new mongoose.Schema({
         required:true
     },
     requirements:{
-        type:String,
+        type:[String],
         required:true 
     },
     experience:{
@@ -45,8 +45,8 @@ const jobSchema= new mongoose.Schema({
     },
     applications:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"application"
+        ref:"Application"
     }],
 
 });
-export const Job=mongoose.model("job",jobSchema)
+export const Job=mongoose.model("Job",jobSchema)
