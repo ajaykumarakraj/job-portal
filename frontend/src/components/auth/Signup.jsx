@@ -1,7 +1,6 @@
-
 import axios from "axios";
 import React, { useState } from "react";
-
+import Navbar  from "../shared/Navbar"
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -48,15 +47,22 @@ try {
             "Content-Type":"multipart/form-data"
         }
     })
-    console.log("response data",res.data.message)
+    console.log("response",res.data)
+//     if(res){
+// console.log("response data",res.data.message)
+//  alert("Signup form submitted successfully!");
+//     }
+    
 } catch (error) {
-    console.log(error)
+    console.log("Status:", error.response?.status);
+  console.log("Error message:", error.response?.data);
 }
-    alert("Signup form submitted successfully!");
+   
   };
 
   return (
     <div className="signup-wrapper">
+   <Navbar/>
       <div className="container">
         <div className="row justify-content-center align-items-center min-vh-100">
           <div className="col-12 col-md-8 col-lg-6 col-xl-5">

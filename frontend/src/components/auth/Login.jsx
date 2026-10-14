@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
-
-
+import axios from "axios";
+import Navbar from "../shared/Navbar";
 function Login() {
   const [formData, setFormData] = useState({
     
@@ -20,25 +20,31 @@ function Login() {
       
     });
   };
-const filehandleChange=(e)=>{
-    setFormData({
-        ...formData,
-    file:e.target.files?.[0]
-    })
-}
 
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    console.log("Signup Data:", formData);
-
+    console.log("login Data:", formData);
+const payload={
+  email:formData.email,
+  password:formData.password,
+  role:formData.role
+}
+console.log(payload)
+try {
+    const res=await axios.post("http://localhost:3000/api/v1/user/login",payload)
+    console.log("response data",res.data.message)
+} catch (error) {
+    console.log(error)
+}
     alert("Signup form submitted successfully!");
   };
 
   return (
     <div className="signup-wrapper">
+      <Navbar/>
       <div className="container">
         <div className="row justify-content-center align-items-center min-vh-100">
           <div className="col-12 col-md-8 col-lg-6 col-xl-5">
