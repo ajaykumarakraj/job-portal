@@ -35,7 +35,7 @@ const payload={
 console.log(payload)
 try {
     const res=await axios.post("http://localhost:3000/api/v1/user/login",payload)
-    console.log("response data",res.data.message)
+    console.log("response data",res)
 } catch (error) {
     console.log(error)
 }
