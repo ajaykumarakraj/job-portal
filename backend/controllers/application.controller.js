@@ -1,4 +1,5 @@
 import { Application } from "../models/application.model.js";
+import { Job } from "../models/job.model.js";
 export const applyForJob = async (req, res) => {
     try{
         const userId = req.id;
@@ -18,7 +19,7 @@ export const applyForJob = async (req, res) => {
             });
         }
         // check if the job exists
-        job=await Job.findById(jobId);
+      const  job=await Job.findById(jobId);
         if(!job){
             return res.status(404).json({
                 message: "Job not found",
@@ -47,6 +48,7 @@ export const applyForJob = async (req, res) => {
 
 export const getAppliedJobs = async (req, res) => {
     try{
+         const userId = req.id;
         const applications = await Application.find({applicant:userId}).sort({ createdAt: -1 }).populate({
             path:"job",
             options:{sort:{ createdAt:-1}},

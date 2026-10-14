@@ -1,0 +1,59 @@
+
+.signup-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+.signup-card {
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.signup-card h2 {
+  color: #1e293b;
+  font-size: 30px;
+}
+
+.signup-card .form-label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.signup-card .form-control {
+  padding: 11px 12px;
+  border-radius: 8px;
+  border-color: #dbe2ea;
+}
+
+.signup-card .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}
+
+.role-btn {
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.signup-card .btn-primary {
+  border-radius: 8px;
+}
+
+.signup-card .btn-primary:hover {
+  background-color: #084db8;
+}
+
+.signup-card a {
+  text-decoration: none;
+}
+
+@media (max-width: 576px) {
+  .signup-card h2 {
+    font-size: 25px;
+  }
+
+  .signup-card .card-body {
+    padding: 24px !important;
+  }
+}
