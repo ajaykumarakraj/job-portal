@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/authSlice";
 function Login() {
   const [formData, setFormData] = useState({
-    
     email: "",
- 
     password: "",
     role: "student",
-  
   });
-
+const dispatch=useDispatch()
+const {loading}=useSelector(store=>store.auth)
   const handleChange = (e) => {
    
     setFormData({
@@ -33,10 +33,13 @@ const payload={
 }
 console.log(payload)
 try {
+  dispatch(setLoading(true))
     const res=await axios.post("http://localhost:3000/api/v1/user/login",payload)
     console.log("response data",res)
 } catch (error) {
     console.log(error)
+}finally{
+  dispatch(setLoading(false))
 }
     alert("Signup form submitted successfully!");
   };
@@ -143,12 +146,16 @@ try {
                 
 
                   {/* Submit */}
-                  <button
+
+                  {
+                    loading ? <button  className="btn btn-primary w-100 py-2 fw-semibold">loading</button>: <button
                     type="submit"
                     className="btn btn-primary w-100 py-2 fw-semibold"
                   >
                  Login
                   </button>
+                  }
+                 
 
                   <p className="text-center text-muted mt-4 mb-0">
                     Already have an account?{" "}
